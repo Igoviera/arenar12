@@ -16,8 +16,9 @@ interface Player {
   uniformSet: string;
 }
 
+
 const personalizacao = {
-  method: "save",
+  method: "save" as const,
   page: {
     // margin is in MM, default is Margin.NONE = 0
     margin: {
@@ -151,7 +152,7 @@ export default function Home() {
             onClick={() => {
               setIsPDFMode(true);
               setTimeout(() => {
-                generatePDF(recuperarConteudoPDF, personalizacao).then(() => {
+                generatePDF(recuperarConteudoPDF, personalizacao as any).then(() => {
                   setIsPDFMode(false); // Retorna ao modo scroll
                 });
               }, 500); // Tempo para re-renderizar a lista completa
@@ -207,7 +208,6 @@ export default function Home() {
                         alt="Editar jogador"
                         src={iconEditar}
                         className="cursor-pointer w-7"
-                        onClick={() => handleEditarPlayer(index)}
                       />
                     </div>
                     )}
