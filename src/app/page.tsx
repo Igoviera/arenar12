@@ -166,7 +166,7 @@ export default function Home() {
       <section id="conteudo" className="mt-10">
         <h3 className="font-bold text-xl">Lista de jogadores</h3>
         <p>Total: {players.length}</p>
-        <div className={`border-2 mt-2 rounded-md ${!isPDFMode ? "overflow-y-auto" : ""}`} style={!isPDFMode ? { maxHeight: "300px" } : {}}>
+        <div className="border-2 mt-2 rounded-md overflow-y-auto max-h-[400px] sm:max-h-[300px]">
           {players.length === 0 ? (
             <p>Nenhum jogador salvo.</p>
           ) : (
@@ -183,7 +183,7 @@ export default function Home() {
                 .map((player, index) => (
                   <li
                     key={index}
-                    className="text-lg flex items-center border-b py-2 justify-between px-2"
+                    className="w-full text-sm flex items-center border-b py-2 justify-between px-2 leading-relaxed"
                   >
                     <span className="flex gap-2 flex-wrap">
                       <span className="font-bold">Nome:</span> {player.name},
