@@ -5,13 +5,27 @@ import logo from "../../public/r12.png";
 import iconLixo from "../../public/iconLixo.png";
 import iconEditar from "../../public/iconEditar.png";
 import { useState } from "react";
-import generatePDF, { Margin } from "react-to-pdf";
+import generatePDF from "react-to-pdf";
+
+
+interface Player {
+  name: string;
+  numero: string;
+  selectSize: string;
+  gender: string;
+  uniformSet: string;
+}
 
 const personalizacao = {
   method: "save",
   page: {
     // margin is in MM, default is Margin.NONE = 0
-    margin: Margin.MEDIUM,
+    margin: {
+      top: 10, // Defina valores numéricos ou em formato de string, se suportado
+      right: 10,
+      bottom: 10,
+      left: 10,
+    },
     // default is 'A4'
     format: "A4",
     // default is 'portrait'
@@ -19,7 +33,14 @@ const personalizacao = {
   },
 };
 
-const recuperarConteudoPDF = () => document.getElementById("conteudo");
+const recuperarConteudoPDF = () => {
+  const conteudo = document.getElementById("conteudo");
+  if (!conteudo) {
+    console.error("Elemento 'conteudo' não encontrado.");
+    return null;
+  }
+  return conteudo;
+};
 
 export default function Home() {
   const [isPDFMode, setIsPDFMode] = useState(false);
@@ -28,7 +49,7 @@ export default function Home() {
   const [selectSize, setSelectSize] = useState("");
   const [gender, setGender] = useState("");
   const [uniformSet, setUniformSet] = useState("");
-  const [players, setPlayers] = useState([]);
+  const [players, setPlayers] = useState<Player[]>([]);
 
   const handleSavePlayer = () => {
     if (name && numero && selectSize) {
@@ -44,7 +65,7 @@ export default function Home() {
     }
   };
 
-  const handleDeletePlayer = (index) => {
+  const handleDeletePlayer = (index: any) => {
     setPlayers((prevPlayers) => prevPlayers.filter((_, i) => i !== index));
   };
 
