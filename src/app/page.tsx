@@ -44,6 +44,10 @@ export default function Home() {
     return conteudo;
   };
 
+  useEffect(() => {
+    console.log("oi")
+  }, [players]);
+
   const handleSavePlayer = () => {
     if (name && numero && selectSize) {
       const newPlayer = { name, numero, selectSize, gender, uniformSet };
@@ -57,6 +61,7 @@ export default function Home() {
       alert("Preencha todos os campos!");
     }
   };
+
 
 
   const handleDeletePlayer = (index: any) => {
