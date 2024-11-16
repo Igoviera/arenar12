@@ -159,7 +159,7 @@ export default function Home() {
       <section id="conteudo">
         <h3 className="font-bold text-xl">Lista de jogadores</h3>
         <p>Total: {players.length}</p>
-        <div className="border-2 mt-2">
+        <div className="border-2 rounded-md mt-2 overflow-x-auto  h-[50vh]">
           {players.length === 0 ? (
             <p>Nenhum jogador salvo.</p>
           ) : (
