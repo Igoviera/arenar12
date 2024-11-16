@@ -4,7 +4,7 @@ import Image from "next/image";
 import logo from "../../public/r12.png";
 import iconLixo from "../../public/iconLixo.png";
 import iconEditar from "../../public/iconEditar.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import generatePDF from "react-to-pdf";
 
 
@@ -20,27 +20,10 @@ interface Player {
 const personalizacao = {
   method: "save" as const,
   page: {
-    // margin is in MM, default is Margin.NONE = 0
-    margin: {
-      top: 10, // Defina valores numéricos ou em formato de string, se suportado
-      right: 10,
-      bottom: 10,
-      left: 10,
-    },
-    // default is 'A4'
+    margin: { top: 10, right: 10, bottom: 10, left: 10 }, // Ajuste as margens
     format: "A4",
-    // default is 'portrait'
-    orientation: "portrait",
+    orientation: "portrait", // Ou "landscape", se necessário
   },
-};
-
-const recuperarConteudoPDF = () => {
-  const conteudo = document.getElementById("conteudo");
-  if (!conteudo) {
-    console.error("Elemento 'conteudo' não encontrado.");
-    return null;
-  }
-  return conteudo;
 };
 
 export default function Home() {
@@ -51,6 +34,15 @@ export default function Home() {
   const [gender, setGender] = useState("");
   const [uniformSet, setUniformSet] = useState("");
   const [players, setPlayers] = useState<Player[]>([]);
+
+  const recuperarConteudoPDF = () => {
+    const conteudo = document.getElementById("conteudo");
+    if (!conteudo) {
+      console.error("Elemento 'conteudo' não encontrado.");
+      return null;
+    }
+    return conteudo;
+  };
 
   const handleSavePlayer = () => {
     if (name && numero && selectSize) {
@@ -65,6 +57,7 @@ export default function Home() {
       alert("Preencha todos os campos!");
     }
   };
+
 
   const handleDeletePlayer = (index: any) => {
     setPlayers((prevPlayers) => prevPlayers.filter((_, i) => i !== index));
@@ -163,10 +156,10 @@ export default function Home() {
           </button>
         </div>
       </section>
-      <section id="conteudo" className="mt-10">
+      <section id="conteudo">
         <h3 className="font-bold text-xl">Lista de jogadores</h3>
         <p>Total: {players.length}</p>
-        <div className="border-2 mt-2 rounded-md overflow-y-auto max-h-[400px] sm:max-h-[300px]">
+        <div className="border-2 mt-2">
           {players.length === 0 ? (
             <p>Nenhum jogador salvo.</p>
           ) : (
@@ -183,9 +176,9 @@ export default function Home() {
                 .map((player, index) => (
                   <li
                     key={index}
-                    className="w-full text-sm flex items-center border-b py-2 justify-between px-2 leading-relaxed"
+                    className="w-full flex  text-sm items-center border-b py-2 justify-between px-2"
                   >
-                    <span className="flex gap-2 flex-wrap">
+                    <span className="flex flex-wrap gap-2">
                       <span className="font-bold">Nome:</span> {player.name},
                       <span className="font-bold">Número:</span> {player.numero}
                       ,<span className="font-bold">Tamanho:</span>{" "}
