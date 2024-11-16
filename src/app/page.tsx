@@ -161,10 +161,11 @@ export default function Home() {
           </button>
         </div>
       </section>
-      <section id="conteudo">
+      
+      <section id="conteudo" className="max-w-full overflow-x-auto mx-auto" style={{ width: '800px', margin: '0 auto'}}>
         <h3 className="font-bold text-xl">Lista de jogadores</h3>
         <p>Total: {players.length}</p>
-        <div className="border-2 rounded-md mt-2 overflow-x-auto  h-[50vh]">
+        <div className="border-2 rounded-md mt-2 overflow-x-auto min-w-[800px] whitespace-nowrap">
           {players.length === 0 ? (
             <p>Nenhum jogador salvo.</p>
           ) : (
