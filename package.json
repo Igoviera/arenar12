@@ -9,12 +9,16 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "install": "^0.13.0",
+    "jspdf": "^2.5.2",
+    "jspdf-autotable": "^3.8.4",
     "next": "14.0.2",
     "react": "^18",
     "react-dom": "^18",
     "react-to-pdf": "^1.0.1"
   },
   "devDependencies": {
+    "@types/jspdf": "^2.0.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
