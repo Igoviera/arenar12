@@ -2,12 +2,9 @@
 
 import Image from "next/image";
 import logo from "../../public/r12.png";
-import iconLixo from "../../public/iconLixo.png";
-import iconEditar from "../../public/iconEditar.png";
-import { useEffect, useState } from "react";
-import generatePDF from "react-to-pdf";
+import {useState } from "react";
 import MyPdf from "./components/MyPdf";
-import jspdf, { jsPDF } from "jspdf";
+import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 
 interface Player {
@@ -18,17 +15,7 @@ interface Player {
   uniformSet: string;
 }
 
-const personalizacao = {
-  method: "save" as const,
-  page: {
-    margin: { top: 10, right: 10, bottom: 10, left: 10 }, // Ajuste as margens
-    format: "A4",
-    orientation: "portrait", // Ou "landscape", se necessário
-  },
-};
-
 export default function Home() {
-  const [isPDFMode, setIsPDFMode] = useState(false);
   const [name, setName] = useState("");
   const [numero, setNumero] = useState("");
   const [selectSize, setSelectSize] = useState("");
@@ -52,7 +39,7 @@ export default function Home() {
 
   const gerarPDF = () => {
     const doc = new jsPDF();
-    const title = "Lista de Jogadores";
+    const title = `Lista de Jogadores: ${players.length}`;
     doc.text(title, 14, 10);
 
     const headers = ["Nome", "Número", "Tamanho", "Camiseta", "Conjunto"];
@@ -63,6 +50,7 @@ export default function Home() {
       player.gender,
       player.uniformSet,
     ]);
+
 
     doc.autoTable({
       head: [headers],
@@ -76,7 +64,6 @@ export default function Home() {
         valign: "middle",
       },
     });
-
     doc.save("lista_jogadores.pdf");
   };
 
@@ -96,6 +83,7 @@ export default function Home() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             type="text"
+            maxLength={20}
             placeholder="Nome do jogador"
             className="p-2 border-2 rounded-md border-gray-300"
           />
@@ -106,6 +94,8 @@ export default function Home() {
             value={numero}
             onChange={(e) => setNumero(e.target.value)}
             type="text"
+            maxLength={3}
+            pattern="\d*"
             placeholder="Número da camisa"
             className="p-2 border-2 rounded-md border-gray-300"
           />
@@ -156,7 +146,7 @@ export default function Home() {
         <div>
           <button
             onClick={handleSavePlayer}
-            className=" px-5 bg-blue-700 p-2 rounded-md text-white cursor-pointer"
+            className=" px-5 bg-blue-900 p-2 rounded-md text-white cursor-pointer"
           >
             Salvar jogador
           </button>
@@ -170,9 +160,8 @@ export default function Home() {
           </button>
         </div>
       </section>
-
       <section>
-        <MyPdf players={players} />
+        <MyPdf players={players} onDeletePlayer={handleDeletePlayer}/>
       </section>
     </main>
   );
