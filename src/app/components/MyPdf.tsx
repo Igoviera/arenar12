@@ -23,9 +23,9 @@ const MyPdf: React.FC<MyPdfProps> = ({ players, onDeletePlayer }) => {
   });
 
   return (
-    <div className="mx-auto bg-white rounded-lg mt-5">
-      <h1 className="text-2xl font-bold text-center text-gray-800 mb-6">
-        Lista de Jogadores {sortedPlayers.length}
+    <div className="mx-auto bg-blue-900 rounded-lg mt-5">
+      <h1 className="text-lg py-2 font-bold text-center text-white border-b-2">
+        Lista de Jogadores
       </h1>
 
       {/* Contêiner com scroll horizontal */}

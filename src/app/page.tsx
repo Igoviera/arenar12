@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import logo from "../../public/r12.png";
-import {useState } from "react";
+import logo from "../../public/logo01.png";
+import { useState } from "react";
 import MyPdf from "./components/MyPdf";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
@@ -38,33 +38,38 @@ export default function Home() {
   };
 
   const gerarPDF = () => {
-    const doc = new jsPDF();
-    const title = `Lista de Jogadores: ${players.length}`;
-    doc.text(title, 14, 10);
+    if (players.length > 0) {
+      const doc = new jsPDF();
 
-    const headers = ["Nome", "Número", "Tamanho", "Camiseta", "Conjunto"];
-    const data = players.map((player) => [
-      player.name,
-      player.numero,
-      player.selectSize,
-      player.gender,
-      player.uniformSet,
-    ]);
+      doc.text("Relatório de Jogadores", 105, 10, { align: "center" });
+      doc.text(`Data: ${new Date().toLocaleDateString()}`, 14, 20);
+      doc.text(`Total de jogadores: ${players.length}`, 14, 30);
 
+      const headers = ["Nome", "Número", "Tamanho", "Camiseta", "Conjunto"];
+      const data = players.map((player) => [
+        player.name,
+        player.numero,
+        player.selectSize,
+        player.gender,
+        player.uniformSet,
+      ]);
 
-    doc.autoTable({
-      head: [headers],
-      body: data,
-      startY: 20, // Define a posição vertical da tabela no documento
-      theme: "grid", // Experimente outros temas como 'striped' ou 'plain'
-      styles: {
-        // Adicione estilos personalizados aqui, se necessário
-        fontSize: 10,
-        halign: "center",
-        valign: "middle",
-      },
-    });
-    doc.save("lista_jogadores.pdf");
+      doc.autoTable({
+        head: [headers],
+        body: data,
+        startY: 40, // Define a posição vertical da tabela no documento
+        theme: "grid", // Experimente outros temas como 'striped' ou 'plain'
+        styles: {
+          // Adicione estilos personalizados aqui, se necessário
+          fontSize: 10,
+          halign: "center",
+          valign: "middle",
+        },
+      });
+      doc.save("lista_jogadores.pdf");
+    } else {
+      alert("Preencha todos os campos!")
+    }
   };
 
   const handleDeletePlayer = (index: any) => {
@@ -73,12 +78,12 @@ export default function Home() {
 
   return (
     <main className="container mx-auto px-4 flex flex-col justify-center">
-      <div className="flex justify-center mt-5">
-        <Image alt="Logo" width={300} src={logo} />
+      <div className="flex justify-center mt-10">
+        <Image alt="Logo" width={310} src={logo} />
       </div>
-      <section className="mt-10 flex flex-wrap items-end  gap-3">
+      <section className="mt-20 flex flex-wrap items-end  gap-3">
         <div>
-          <p className="font-bold">Nome:</p>
+          <p className="font-bold text-white">Nome:</p>
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -89,7 +94,7 @@ export default function Home() {
           />
         </div>
         <div>
-          <p className="font-bold">Número:</p>
+          <p className="font-bold text-white">Número:</p>
           <input
             value={numero}
             onChange={(e) => setNumero(e.target.value)}
@@ -101,7 +106,7 @@ export default function Home() {
           />
         </div>
         <div>
-          <p className="font-bold">Tamanho:</p>
+          <p className="font-bold text-white">Tamanho:</p>
           <select
             value={selectSize}
             onChange={(e) => setSelectSize(e.target.value)}
@@ -117,7 +122,7 @@ export default function Home() {
           </select>
         </div>
         <div>
-          <p className="font-bold">Camiseta:</p>
+          <p className="font-bold text-white">Camiseta:</p>
           <select
             value={gender}
             onChange={(e) => setGender(e.target.value)}
@@ -130,7 +135,7 @@ export default function Home() {
           </select>
         </div>
         <div>
-          <p className="font-bold">Conjunto:</p>
+          <p className="font-bold text-white">Conjunto:</p>
           <select
             value={uniformSet}
             onChange={(e) => setUniformSet(e.target.value)}
@@ -154,14 +159,14 @@ export default function Home() {
         <div>
           <button
             onClick={gerarPDF}
-            className=" px-5 bg-green-700 p-2 rounded-md text-white cursor-pointer"
+            className=" px-5 bg-blue-900 p-2 rounded-md text-white cursor-pointer"
           >
             Gerar PDF
           </button>
         </div>
       </section>
       <section>
-        <MyPdf players={players} onDeletePlayer={handleDeletePlayer}/>
+        <MyPdf players={players} onDeletePlayer={handleDeletePlayer} />
       </section>
     </main>
   );
