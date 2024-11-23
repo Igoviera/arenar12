@@ -7,10 +7,29 @@ import MyPdf from "./components/MyPdf";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 
+
+type ShirtSizes =
+  | "2Anos"
+  | "4Anos"
+  | "6Anos"
+  | "8Anos"
+  | "10Anos"
+  | "12Anos"
+  | "14Anos"
+  | "16Anos"
+  | "P"
+  | "M"
+  | "G"
+  | "GG"
+  | "G1"
+  | "G2"
+  | "G3"
+  | "G4";
+
 interface Player {
   name: string;
   numero: string;
-  selectSize: string;
+  selectSize: ShirtSizes;
   gender: string;
   uniformSet: string;
 }
@@ -18,14 +37,14 @@ interface Player {
 export default function Home() {
   const [name, setName] = useState("");
   const [numero, setNumero] = useState("");
-  const [selectSize, setSelectSize] = useState("");
+  const [selectSize, setSelectSize] = useState<ShirtSizes | "">("");
   const [gender, setGender] = useState("");
   const [uniformSet, setUniformSet] = useState("");
   const [players, setPlayers] = useState<Player[]>([]);
 
   // Função para contar camisas de cada tamanho
   const countShirtSizes = (players: Player[]) => {
-    const counts = {
+    const counts:Record<ShirtSizes, number> = {
       "2Anos": 0,
       "4Anos": 0,
       "6Anos": 0,
@@ -44,7 +63,7 @@ export default function Home() {
       G4: 0,
     };
     players.forEach((player) => {
-      if (counts[player.selectSize] !== undefined) {
+      if (player.selectSize in counts) {
         counts[player.selectSize]++;
       }
     });
@@ -150,7 +169,7 @@ export default function Home() {
           <p className="font-bold text-white">Tamanho:</p>
           <select
             value={selectSize}
-            onChange={(e) => setSelectSize(e.target.value)}
+            onChange={(e:any) => setSelectSize(e.target.value)}
             className="p-2 border-2 rounded-md border-gray-300"
           >
             <option value=""></option>
