@@ -23,6 +23,34 @@ export default function Home() {
   const [uniformSet, setUniformSet] = useState("");
   const [players, setPlayers] = useState<Player[]>([]);
 
+  // Função para contar camisas de cada tamanho
+  const countShirtSizes = (players: Player[]) => {
+    const counts = {
+      "2Anos": 0,
+      "4Anos": 0,
+      "6Anos": 0,
+      "8Anos": 0,
+      "10Anos": 0,
+      "12Anos": 0,
+      "14Anos": 0,
+      "16Anos": 0,
+      P: 0,
+      M: 0,
+      G: 0,
+      GG: 0,
+      G1: 0,
+      G2: 0,
+      G3: 0,
+      G4: 0,
+    };
+    players.forEach((player) => {
+      if (counts[player.selectSize] !== undefined) {
+        counts[player.selectSize]++;
+      }
+    });
+    return counts;
+  };
+
   const handleSavePlayer = () => {
     if (name && numero && selectSize) {
       const newPlayer = { name, numero, selectSize, gender, uniformSet };
@@ -45,6 +73,19 @@ export default function Home() {
       doc.text(`Data: ${new Date().toLocaleDateString()}`, 14, 20);
       doc.text(`Total de jogadores: ${players.length}`, 14, 30);
 
+      // Contagem de tamanhos
+      const shirtCounts = countShirtSizes(players);
+      doc.text("Contagem de Camisas por Tamanho:", 14, 40);
+
+      // Cria uma string com os tamanhos e suas contagens
+      const countsText = Object.entries(shirtCounts)
+        .filter(([_, count]) => count > 0)
+        .map(([size, count]) => `${size}: ${count}`)
+        .join(" | ");
+
+      // Exibe tudo na mesma linha
+      doc.text(countsText, 14, 50);
+
       const headers = ["Nome", "Número", "Tamanho", "Camiseta", "Conjunto"];
       const data = players.map((player) => [
         player.name,
@@ -57,7 +98,7 @@ export default function Home() {
       doc.autoTable({
         head: [headers],
         body: data,
-        startY: 40, // Define a posição vertical da tabela no documento
+        startY: 60, // Define a posição vertical da tabela no documento
         theme: "grid", // Experimente outros temas como 'striped' ou 'plain'
         styles: {
           // Adicione estilos personalizados aqui, se necessário
@@ -68,7 +109,7 @@ export default function Home() {
       });
       doc.save("lista_jogadores.pdf");
     } else {
-      alert("Preencha todos os campos!")
+      alert("Preencha todos os campos!");
     }
   };
 
@@ -113,12 +154,22 @@ export default function Home() {
             className="p-2 border-2 rounded-md border-gray-300"
           >
             <option value=""></option>
+            <option value="2Anos">2</option>
+            <option value="4Anos">4</option>
+            <option value="6Anos">6</option>
+            <option value="8Anos">8</option>
+            <option value="10Anos">10</option>
+            <option value="12Anos">12</option>
+            <option value="14Anos">14</option>
+            <option value="16Anos">16</option>
             <option value="P">P</option>
             <option value="M">M</option>
             <option value="G">G</option>
             <option value="GG">GG</option>
             <option value="G1">G1</option>
             <option value="G2">G2</option>
+            <option value="G3">G3</option>
+            <option value="G4">G4</option>
           </select>
         </div>
         <div>
