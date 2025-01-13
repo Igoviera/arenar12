@@ -288,7 +288,7 @@ export default function Home() {
               className="p-2 border-2 rounded-md border-gray-300"
             >
               <option value=""></option>
-              <option value="cancha">Cancha lisa</option>
+              <option value="cancha">Kanxa lisa</option>
               <option value="Colmeia">Colmeia</option>
               <option value="top3d">Pro 3D</option>
             </select>
