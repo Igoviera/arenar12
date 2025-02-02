@@ -45,6 +45,8 @@ export default function Home() {
   const [mesh, setMesh] = useState("");
   const [players, setPlayers] = useState<Player[]>([]);
 
+  console.log(players);
+
   // Função para contar camisas de cada tamanho
   const countShirtSizes = (players: Player[]) => {
     const counts: Record<ShirtSizes, number> = {
@@ -111,8 +113,8 @@ export default function Home() {
       doc.setFontSize(12);
       doc.setFont("helvetica", "normal");
 
-      doc.text(`Data: ${new Date().toLocaleDateString()}`, 14, y);
-      y += 10;
+      //doc.text(`Data: ${new Date().toLocaleDateString()}`, 14, y);
+     // y += 10;
 
       doc.setFont("helvetica", "bold");
       doc.text("Nome da Equipe:", 14, y);
@@ -127,18 +129,50 @@ export default function Home() {
       y += 10;
 
       // Contagem de camisetas
+      const shirtCountsMen = countShirtSizes(
+        players.filter((player) => player.gender == "Masculina")
+      );
+      const shirtCountsWomen = countShirtSizes(
+        players.filter((player) => player.gender == "Feminina")
+      );
+      const shirtCountsKids = countShirtSizes(
+        players.filter((player) => player.gender == "Infantil")
+      );
+
+      // Diagnóstico: Verifique as contagens de camisetas
+      console.log("Contagem Camisetas Masculinas:", shirtCountsMen);
+      console.log("Contagem Camisetas Femininas:", shirtCountsWomen);
+      console.log("Contagem Camisetas Infantis:", shirtCountsKids);
+
+      // Função para formatar a contagem
+      const formatShirtCounts = (shirtCounts: Record<string, number>) =>
+        Object.entries(shirtCounts)
+          .filter(([_, count]) => count > 0)
+          .map(([size, count]: [string, number]) => `${count}${size}`)
+          .join(" | ") || "Nenhum tamanho registrado";
+
+      // Camisetas Masculinas
       doc.setFont("helvetica", "bold");
-      doc.text("Contagem de Camisas por Tamanho:", 14, y);
+      doc.text("Camisetas Masculinas:", 14, y);
       y += 8;
-
-      const shirtCounts = countShirtSizes(players);
       doc.setFont("helvetica", "normal");
+      doc.text(formatShirtCounts(shirtCountsMen), 14, y);
+      y += 10;
 
-      const countsText = Object.entries(shirtCounts)
-        .filter(([_, count]) => count > 0)
-        .map(([size, count]) => `${size}: ${count}`)
-        .join(" | ");
-      doc.text(countsText || "Nenhum tamanho registrado", 14, y);
+      // Camisetas Femininas
+      doc.setFont("helvetica", "bold");
+      doc.text("Camisetas Femininas:", 14, y);
+      y += 8;
+      doc.setFont("helvetica", "normal");
+      doc.text(formatShirtCounts(shirtCountsWomen), 14, y);
+      y += 10;
+
+      // Camisetas Infantis
+      doc.setFont("helvetica", "bold");
+      doc.text("Camisetas Infantis:", 14, y);
+      y += 8;
+      doc.setFont("helvetica", "normal");
+      doc.text(formatShirtCounts(shirtCountsKids), 14, y);
       y += 10;
 
       // Adicionar uma nova linha divisória antes da tabela
@@ -189,7 +223,7 @@ export default function Home() {
 
   return (
     <>
-      <Menu/>
+      <Menu />
       <main className="container mx-auto px-4 flex flex-col justify-center">
         <div className="flex justify-center mt-10">
           <Image alt="Logo" width={310} src={logo} />
