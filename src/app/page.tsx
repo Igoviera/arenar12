@@ -225,9 +225,9 @@ export default function Home() {
     <>
       <Menu />
       <main className="container mx-auto px-4 flex flex-col justify-center">
-        <div className="flex justify-center mt-10">
+        {/*<div className="flex justify-center mt-10">
           <Image alt="Logo" width={310} src={logo} />
-        </div>
+        </div>*/}
         <section className="mt-20 flex flex-wrap items-end  gap-3">
           <div>
             <p className="font-bold text-white">Nome da Equipe:</p>

@@ -9,7 +9,7 @@ const TabelaDeMedidas = () => {
         <>
             <Menu />
             <main className="flex flex-col justify-center">
-                <h1 className="text-white italic text-2xl flex justify-center mt-10">Tabelas de medidas</h1>
+               {/* <h1 className="text-white italic text-2xl flex justify-center mt-10">Tabelas de medidas</h1>
                 <section className="mt-10">
                     <div className="flex gap-11 justify-center flex-wrap">
                         <Image
@@ -34,7 +34,7 @@ const TabelaDeMedidas = () => {
 
                         />
                     </div>
-                </section>
+                </section>*/}
 
             </main>
 
