@@ -8,6 +8,7 @@ import Menu from "./components/Menu";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 import Footer from "./components/Footer";
+import NotFound from "./not-found";
 
 type ShirtSizes =
   | "2Anos"
@@ -36,6 +37,7 @@ interface Player {
 }
 
 export default function Home() {
+  const notFound = true;
   const [nameEquipe, setNameEquipe] = useState("");
   const [name, setName] = useState("");
   const [numero, setNumero] = useState("");
@@ -114,7 +116,7 @@ export default function Home() {
       doc.setFont("helvetica", "normal");
 
       //doc.text(`Data: ${new Date().toLocaleDateString()}`, 14, y);
-     // y += 10;
+      // y += 10;
 
       doc.setFont("helvetica", "bold");
       doc.text("Nome da Equipe:", 14, y);
@@ -223,133 +225,139 @@ export default function Home() {
 
   return (
     <>
-      <Menu />
-      <main className="container mx-auto px-4 flex flex-col justify-center">
-        <div className="flex justify-center mt-10">
-          <Image alt="Logo" width={310} src={logo} />
+      {notFound ? (
+        <NotFound />
+      ) : (
+        <div>
+          <Menu />
+          <main className="container mx-auto px-4 flex flex-col justify-center">
+            <div className="flex justify-center mt-10">
+              <Image alt="Logo" width={310} src={logo} />
+            </div>
+            <section className="mt-20 flex flex-wrap items-end  gap-3">
+              <div>
+                <p className="font-bold text-white">Nome da Equipe:</p>
+                <input
+                  value={nameEquipe}
+                  onChange={(e) => setNameEquipe(e.target.value)}
+                  type="text"
+                  maxLength={20}
+                  placeholder="Nome da Equipe"
+                  className="p-2 border-2 rounded-md border-gray-300"
+                />
+              </div>
+              <div>
+                <p className="font-bold text-white">Nome do jogador:</p>
+                <input
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  type="text"
+                  maxLength={20}
+                  placeholder="Nome do jogador"
+                  className="p-2 border-2 rounded-md border-gray-300"
+                />
+              </div>
+              <div>
+                <p className="font-bold text-white">Número da camisa:</p>
+                <input
+                  value={numero}
+                  onChange={(e) => setNumero(e.target.value)}
+                  type="text"
+                  maxLength={3}
+                  pattern="\d*"
+                  placeholder="Número da camisa"
+                  className="p-2 border-2 rounded-md border-gray-300"
+                />
+              </div>
+              <div>
+                <p className="font-bold text-white">Tamanho:</p>
+                <select
+                  value={selectSize}
+                  onChange={(e: any) => setSelectSize(e.target.value)}
+                  className="p-2 border-2 rounded-md border-gray-300"
+                >
+                  <option value=""></option>
+                  <option value="2Anos">2</option>
+                  <option value="4Anos">4</option>
+                  <option value="6Anos">6</option>
+                  <option value="8Anos">8</option>
+                  <option value="10Anos">10</option>
+                  <option value="12Anos">12</option>
+                  <option value="14Anos">14</option>
+                  <option value="16Anos">16</option>
+                  <option value="P">P</option>
+                  <option value="M">M</option>
+                  <option value="G">G</option>
+                  <option value="GG">GG</option>
+                  <option value="G1">G1</option>
+                  <option value="G2">G2</option>
+                  <option value="G3">G3</option>
+                  <option value="G4">G4</option>
+                </select>
+              </div>
+              <div>
+                <p className="font-bold text-white">Camiseta:</p>
+                <select
+                  value={gender}
+                  onChange={(e) => setGender(e.target.value)}
+                  className="p-2 border-2 rounded-md border-gray-300"
+                >
+                  <option value=""></option>
+                  <option value="Masculina">Masculina</option>
+                  <option value="Feminina">Feminina</option>
+                  <option value="Infantil">Infantil</option>
+                </select>
+              </div>
+              <div>
+                <p className="font-bold text-white">Conjunto:</p>
+                <select
+                  value={uniformSet}
+                  onChange={(e) => setUniformSet(e.target.value)}
+                  className="p-2 border-2 rounded-md border-gray-300"
+                >
+                  <option value=""></option>
+                  <option value="Sim">Sim</option>
+                  <option value="Nao">Não</option>
+                </select>
+              </div>
+              <div>
+                <p className="font-bold text-white">Tipo de malha:</p>
+                <select
+                  value={mesh}
+                  onChange={(e) => setMesh(e.target.value)}
+                  className="p-2 border-2 rounded-md border-gray-300"
+                >
+                  <option value=""></option>
+                  <option value="cancha">Kanxa lisa</option>
+                  <option value="Colmeia">Colmeia</option>
+                  <option value="top3d">Pro 3D</option>
+                </select>
+              </div>
+            </section>
+            <section className="flex gap-3 mt-5">
+              <div>
+                <button
+                  onClick={handleSavePlayer}
+                  className=" px-5 bg-blue-900 p-2 rounded-md text-white cursor-pointer"
+                >
+                  Salvar jogador
+                </button>
+              </div>
+              <div>
+                <button
+                  onClick={gerarPDF}
+                  className=" px-5 bg-blue-900 p-2 rounded-md text-white cursor-pointer"
+                >
+                  Gerar PDF
+                </button>
+              </div>
+            </section>
+            <section>
+              <MyPdf players={players} onDeletePlayer={handleDeletePlayer} />
+            </section>
+          </main>
         </div>
-        <section className="mt-20 flex flex-wrap items-end  gap-3">
-          <div>
-            <p className="font-bold text-white">Nome da Equipe:</p>
-            <input
-              value={nameEquipe}
-              onChange={(e) => setNameEquipe(e.target.value)}
-              type="text"
-              maxLength={20}
-              placeholder="Nome da Equipe"
-              className="p-2 border-2 rounded-md border-gray-300"
-            />
-          </div>
-          <div>
-            <p className="font-bold text-white">Nome do jogador:</p>
-            <input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              type="text"
-              maxLength={20}
-              placeholder="Nome do jogador"
-              className="p-2 border-2 rounded-md border-gray-300"
-            />
-          </div>
-          <div>
-            <p className="font-bold text-white">Número da camisa:</p>
-            <input
-              value={numero}
-              onChange={(e) => setNumero(e.target.value)}
-              type="text"
-              maxLength={3}
-              pattern="\d*"
-              placeholder="Número da camisa"
-              className="p-2 border-2 rounded-md border-gray-300"
-            />
-          </div>
-          <div>
-            <p className="font-bold text-white">Tamanho:</p>
-            <select
-              value={selectSize}
-              onChange={(e: any) => setSelectSize(e.target.value)}
-              className="p-2 border-2 rounded-md border-gray-300"
-            >
-              <option value=""></option>
-              <option value="2Anos">2</option>
-              <option value="4Anos">4</option>
-              <option value="6Anos">6</option>
-              <option value="8Anos">8</option>
-              <option value="10Anos">10</option>
-              <option value="12Anos">12</option>
-              <option value="14Anos">14</option>
-              <option value="16Anos">16</option>
-              <option value="P">P</option>
-              <option value="M">M</option>
-              <option value="G">G</option>
-              <option value="GG">GG</option>
-              <option value="G1">G1</option>
-              <option value="G2">G2</option>
-              <option value="G3">G3</option>
-              <option value="G4">G4</option>
-            </select>
-          </div>
-          <div>
-            <p className="font-bold text-white">Camiseta:</p>
-            <select
-              value={gender}
-              onChange={(e) => setGender(e.target.value)}
-              className="p-2 border-2 rounded-md border-gray-300"
-            >
-              <option value=""></option>
-              <option value="Masculina">Masculina</option>
-              <option value="Feminina">Feminina</option>
-              <option value="Infantil">Infantil</option>
-            </select>
-          </div>
-          <div>
-            <p className="font-bold text-white">Conjunto:</p>
-            <select
-              value={uniformSet}
-              onChange={(e) => setUniformSet(e.target.value)}
-              className="p-2 border-2 rounded-md border-gray-300"
-            >
-              <option value=""></option>
-              <option value="Sim">Sim</option>
-              <option value="Nao">Não</option>
-            </select>
-          </div>
-          <div>
-            <p className="font-bold text-white">Tipo de malha:</p>
-            <select
-              value={mesh}
-              onChange={(e) => setMesh(e.target.value)}
-              className="p-2 border-2 rounded-md border-gray-300"
-            >
-              <option value=""></option>
-              <option value="cancha">Kanxa lisa</option>
-              <option value="Colmeia">Colmeia</option>
-              <option value="top3d">Pro 3D</option>
-            </select>
-          </div>
-        </section>
-        <section className="flex gap-3 mt-5">
-          <div>
-            <button
-              onClick={handleSavePlayer}
-              className=" px-5 bg-blue-900 p-2 rounded-md text-white cursor-pointer"
-            >
-              Salvar jogador
-            </button>
-          </div>
-          <div>
-            <button
-              onClick={gerarPDF}
-              className=" px-5 bg-blue-900 p-2 rounded-md text-white cursor-pointer"
-            >
-              Gerar PDF
-            </button>
-          </div>
-        </section>
-        <section>
-          <MyPdf players={players} onDeletePlayer={handleDeletePlayer} />
-        </section>
-      </main>
+      )}
     </>
   );
 }
